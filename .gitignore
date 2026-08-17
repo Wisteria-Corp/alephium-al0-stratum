@@ -1,0 +1,9 @@
+.env
+config/user.conf
+config/pool.json
+data/
+*.tar
+*.tar.gz
+.DS_Store
+_PUBLISH_FROM_WISTERIA_CORP.md
+_GRANT_DRAFT.md

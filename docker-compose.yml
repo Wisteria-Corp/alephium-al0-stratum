@@ -1,0 +1,56 @@
+name: alephium-al0-stratum
+
+volumes:
+  pool-logs: {}
+
+networks:
+  lan:
+    driver: bridge
+
+services:
+  alephium:
+    image: alephium/alephium:v4.6.0
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    ports:
+      - "9973:9973/tcp"
+      - "9973:9973/udp"
+      - "127.0.0.1:12973:12973"
+    volumes:
+      - ./data/alephium:/alephium-home/.alephium
+      - ./config/user.conf:/alephium-home/.alephium/user.conf:ro
+    networks:
+      - lan
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - lan
+
+  mining-pool:
+    image: alephium-mining-pool:80d252e
+    build:
+      context: https://github.com/alephium/mining-pool.git#80d252e6fcb5b1182a69b5fb4f06f9f5806f1144
+    restart: unless-stopped
+    depends_on:
+      - alephium
+      - redis
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "20032:20032"
+    volumes:
+      - ./config/pool.json:/home/node/mining-pool/lib/config.json:ro
+      - pool-logs:/home/node/mining-pool/logs
+    networks:
+      - lan

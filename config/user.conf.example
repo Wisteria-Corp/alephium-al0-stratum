@@ -1,0 +1,12 @@
+alephium.api.network-interface = "0.0.0.0"
+alephium.mining.api-interface = "0.0.0.0"
+alephium.api.api-key-enabled = true
+alephium.api.api-key = "REPLACE_WITH_API_KEY_MIN_32_CHARS"
+
+# One address per group (0-3). Same four values as config/pool.json "addresses".
+alephium.mining.miner-addresses = [
+  "REPLACE_MINER_ADDRESS_G0",
+  "REPLACE_MINER_ADDRESS_G1",
+  "REPLACE_MINER_ADDRESS_G2",
+  "REPLACE_MINER_ADDRESS_G3"
+]
